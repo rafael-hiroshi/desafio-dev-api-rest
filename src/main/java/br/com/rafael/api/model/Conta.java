@@ -19,7 +19,8 @@ public class Conta {
     private BigDecimal saldo;
     private BigDecimal limiteSaqueDiario;
     private Boolean flagAtivo;
-    private Long tipoConta;
+    @Enumerated(EnumType.ORDINAL)
+    private TipoConta tipoConta;
     private LocalDate dataCriacao;
 
     @OneToMany(mappedBy = "idConta")
@@ -37,8 +38,8 @@ public class Conta {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa idPessoa) {
-        this.pessoa = idPessoa;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     public BigDecimal getSaldo() {
@@ -65,11 +66,11 @@ public class Conta {
         this.flagAtivo = flagAtivo;
     }
 
-    public Long getTipoConta() {
+    public TipoConta getTipoConta() {
         return tipoConta;
     }
 
-    public void setTipoConta(Long tipoConta) {
+    public void setTipoConta(TipoConta tipoConta) {
         this.tipoConta = tipoConta;
     }
 
