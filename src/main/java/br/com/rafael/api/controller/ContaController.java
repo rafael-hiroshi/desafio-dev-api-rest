@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -22,7 +23,7 @@ public class ContaController {
     private ContaService contaService;
 
     @PostMapping
-    public ResponseEntity<ContaDetalheDto> cadastrar(@RequestBody ContaForm contaForm, UriComponentsBuilder builder) {
+    public ResponseEntity<ContaDetalheDto> cadastrar(@Valid @RequestBody ContaForm contaForm, UriComponentsBuilder builder) {
         Conta conta = contaService.cadastrar(contaForm);
 
         URI uri = builder.path("/conta/{id}").buildAndExpand(conta.getIdConta()).toUri();
