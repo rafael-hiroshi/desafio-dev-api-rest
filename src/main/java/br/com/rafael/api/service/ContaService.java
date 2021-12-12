@@ -1,15 +1,18 @@
 package br.com.rafael.api.service;
 
 import br.com.rafael.api.controller.form.ContaForm;
+import br.com.rafael.api.exception.RecursoNaoEncontradoException;
 import br.com.rafael.api.model.Conta;
 import br.com.rafael.api.model.Pessoa;
 import br.com.rafael.api.repository.ContaRepository;
 import br.com.rafael.api.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 public class ContaService {
@@ -22,13 +25,12 @@ public class ContaService {
 
     @Transactional
     public Conta cadastrar(ContaForm contaForm) {
-        Optional<Pessoa> pessoa = pessoaRepository.findById(contaForm.getIdPessoa());
+        Long id = contaForm.getIdPessoa();
+        Pessoa pessoa = pessoaRepository
+                .findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(id));
 
-        if (!pessoa.isPresent()) {
-            throw new IllegalArgumentException("Pessoa não cadastrada!");
-        }
-
-        Conta conta = contaForm.converter(pessoa.get());
+        Conta conta = contaForm.converter(pessoa);
         contaRepository.save(conta);
         return conta;
     }

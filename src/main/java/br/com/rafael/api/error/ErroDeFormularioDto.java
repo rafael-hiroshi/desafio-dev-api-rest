@@ -1,4 +1,4 @@
-package br.com.rafael.api.config.validation;
+package br.com.rafael.api.error;
 
 public class ErroDeFormularioDto {
     private String campo;
