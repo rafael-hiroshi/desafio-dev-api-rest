@@ -18,7 +18,7 @@ public class Conta {
     private BigDecimal saldo = BigDecimal.ZERO;
     private BigDecimal limiteSaqueDiario = new BigDecimal(500);
     private Boolean flagAtivo = true;
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = TipoContaConverter.class)
     private TipoConta tipoConta;
     private LocalDate dataCriacao = LocalDate.now();
     @OneToMany(mappedBy = "idConta")
@@ -26,7 +26,7 @@ public class Conta {
 
     public Conta(Pessoa pessoa, Integer tipoConta) {
         this.pessoa = pessoa;
-        this.tipoConta = TipoConta.getTipoConta(tipoConta);
+        this.tipoConta = new TipoContaConverter().convertToEntityAttribute(tipoConta);
     }
 
     public Conta() {}

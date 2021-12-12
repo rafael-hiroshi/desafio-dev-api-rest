@@ -1,6 +1,5 @@
 package br.com.rafael.api.model;
 
-import java.util.Arrays;
 
 public enum TipoConta {
     CONTA_CORRENTE(1),
@@ -12,9 +11,7 @@ public enum TipoConta {
         this.tipoConta = tipoConta;
     }
 
-    public static TipoConta getTipoConta(Integer valor) {
-        return Arrays.stream(values())
-                .filter(t -> t.tipoConta == valor)
-                .findFirst().get();
+    public Integer getTipoConta() {
+        return tipoConta;
     }
 }
