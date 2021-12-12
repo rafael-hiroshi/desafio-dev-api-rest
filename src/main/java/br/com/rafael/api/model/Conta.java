@@ -16,7 +16,7 @@ public class Conta {
     @JoinColumn(name = "id_pessoa")
     private Pessoa pessoa;
     private BigDecimal saldo = BigDecimal.ZERO;
-    private BigDecimal limiteSaqueDiario = new BigDecimal(500);
+    private BigDecimal limiteSaqueDiario;
     private Boolean flagAtivo = true;
     @Convert(converter = TipoContaConverter.class)
     private TipoConta tipoConta;
@@ -24,9 +24,10 @@ public class Conta {
     @OneToMany(mappedBy = "idConta")
     private List<Transacao> transacoes = new ArrayList<>();
 
-    public Conta(Pessoa pessoa, Integer tipoConta) {
+    public Conta(Pessoa pessoa, Integer tipoConta, BigDecimal limiteSaqueDiario) {
         this.pessoa = pessoa;
         this.tipoConta = new TipoContaConverter().convertToEntityAttribute(tipoConta);
+        this.limiteSaqueDiario = limiteSaqueDiario;
     }
 
     public Conta() {}
