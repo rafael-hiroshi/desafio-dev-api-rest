@@ -10,21 +10,26 @@ import java.util.List;
 @Table(name = "contas")
 public class Conta {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idConta;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pessoa")
     private Pessoa pessoa;
-    private BigDecimal saldo;
-    private BigDecimal limiteSaqueDiario;
-    private Boolean flagAtivo;
+    private BigDecimal saldo = BigDecimal.ZERO;
+    private BigDecimal limiteSaqueDiario = new BigDecimal(500);
+    private Boolean flagAtivo = true;
     @Enumerated(EnumType.ORDINAL)
     private TipoConta tipoConta;
-    private LocalDate dataCriacao;
-
+    private LocalDate dataCriacao = LocalDate.now();
     @OneToMany(mappedBy = "idConta")
     private List<Transacao> transacoes = new ArrayList<>();
+
+    public Conta(Pessoa pessoa, Integer tipoConta) {
+        this.pessoa = pessoa;
+        this.tipoConta = TipoConta.getTipoConta(tipoConta);
+    }
+
+    public Conta() {}
 
     public Long getIdConta() {
         return idConta;
