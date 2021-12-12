@@ -9,14 +9,14 @@ public class RespostaErroDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime timestamp;
     private int status;
-    private String error;
-    private String message;
+    private String erro;
+    private String mensagem;
 
-    public RespostaErroDto(int status, String error, String message) {
+    public RespostaErroDto(int status, String erro, String mensagem) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
-        this.error = error;
-        this.message = message;
+        this.erro = erro;
+        this.mensagem = mensagem;
     }
 
     public LocalDateTime getTimestamp() {
@@ -27,11 +27,11 @@ public class RespostaErroDto {
         return status;
     }
 
-    public String getError() {
-        return error;
+    public String getErro() {
+        return erro;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMensagem() {
+        return mensagem;
     }
 }

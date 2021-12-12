@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestControllerAdvice
-public class ErroDeValidacaoHandler {
+public class ErrorHandler {
 
     @Autowired
     private MessageSource messageSource;
