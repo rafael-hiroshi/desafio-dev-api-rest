@@ -34,9 +34,9 @@ public class ContaController {
         return ResponseEntity.created(uri).body(new ContaDetalheDto(conta));
     }
 
-    @PostMapping("depositar")
-    public ResponseEntity<ContaDetalheDto> depositar(@Valid @RequestBody ContaDepositoForm form) {
-        Conta conta = contaService.depositar(form);
+    @PostMapping("{id}/depositar")
+    public ResponseEntity<ContaDetalheDto> depositar(@PathVariable Long id, @Valid @RequestBody ContaDepositoForm form) {
+        Conta conta = contaService.depositar(id, form);
 
         return ResponseEntity.ok(new ContaDetalheDto(conta));
     }

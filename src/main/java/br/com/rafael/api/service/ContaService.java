@@ -47,12 +47,11 @@ public class ContaService {
     }
 
     @Transactional
-    public Conta depositar(ContaDepositoForm form) {
+    public Conta depositar(Long id, ContaDepositoForm form) {
         Long idOrigem = form.getIdContaOrigem();
-        Long idDestino = form.getIdContaDestino();
         BigDecimal valor = form.getValor();
 
-        Conta contaDestino = contaRepository.findContaAtivaPorId(idDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idDestino));
+        Conta contaDestino = contaRepository.findContaAtivaPorId(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
         Conta contaOrigem = contaRepository.findContaAtivaPorId(idOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idOrigem));
 
         contaOrigem.deposita(contaDestino, valor);
