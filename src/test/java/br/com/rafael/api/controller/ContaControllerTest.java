@@ -32,7 +32,7 @@ public class ContaControllerTest {
 
     @BeforeAll
     public static void setup() throws URISyntaxException {
-        rotaCadastrar = new URI("/conta/cadastrar");
+        rotaCadastrar = new URI("/conta");
         rotaDepositar = new URI("/conta/depositar");
     }
 

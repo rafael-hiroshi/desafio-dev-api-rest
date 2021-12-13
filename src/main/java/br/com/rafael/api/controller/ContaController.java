@@ -23,7 +23,7 @@ public class ContaController {
     @Autowired
     private ContaService contaService;
 
-    @PostMapping("cadastrar")
+    @PostMapping
     public ResponseEntity<ContaDetalheDto> cadastrar(@Valid @RequestBody ContaForm contaForm, UriComponentsBuilder builder) {
         Conta conta = contaService.cadastrar(contaForm);
 
