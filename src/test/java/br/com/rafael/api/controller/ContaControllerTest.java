@@ -89,6 +89,17 @@ public class ContaControllerTest {
     }
 
     @Test
+    public void testDepositarParaContaInativaDeveRetornarStatusCode404() throws Exception {
+        payload = new JSONObject()
+                .put("idContaOrigem", 1)
+                .put("idContaDestino", 5)
+                .put("valor", new BigDecimal(1000))
+                .toString();
+
+        post(rotaDepositar, 404);
+    }
+
+    @Test
     public void testConsultarSaldoDeContaDeveRetornarStatusCode200() throws Exception {
         get(new URI("/conta/1"), 200);
     }
@@ -96,6 +107,48 @@ public class ContaControllerTest {
     @Test
     public void testConsultarSaldoDeContaInexistenteDeveRetornarStatusCode404() throws Exception {
         get(new URI("/conta/999"), 404);
+    }
+
+    @Test
+    public void testInativarContaExistenteDeveRetornarStatusCode200() throws Exception {
+        payload = new JSONObject()
+                .put("flagAtivo", false)
+                .toString();
+
+        patch(new URI("/conta/5"), 200);
+    }
+
+    @Test
+    public void testReativarContaInativaDeveFalharERetornarStatusCode400() throws Exception {
+        payload = new JSONObject()
+                .put("flagAtivo", false)
+                .toString();
+
+        patch(new URI("/conta/6"), 200);
+
+        payload = new JSONObject()
+                .put("flagAtivo", true)
+                .toString();
+
+        patch(new URI("/conta/6"), 400);
+    }
+
+    @Test
+    public void testInativarContaInexistenteDeveRetornarStatusCode404() throws Exception {
+        payload = new JSONObject()
+                .put("flagAtivo", false)
+                .toString();
+
+        patch(new URI("/conta/999"), 404);
+    }
+
+    private void get(URI rota, int statusCode) throws Exception {
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get(rota))
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .is(statusCode));
     }
 
     private void post(URI rota, int statusCode) throws Exception {
@@ -109,10 +162,12 @@ public class ContaControllerTest {
                         .is(statusCode));
     }
 
-    private void get(URI rota, int statusCode) throws Exception {
+    private void patch(URI rota, int statusCode) throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders
-                        .get(rota))
+                        .patch(rota)
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .is(statusCode));

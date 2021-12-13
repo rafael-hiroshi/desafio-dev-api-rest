@@ -2,6 +2,7 @@ package br.com.rafael.api.service;
 
 import br.com.rafael.api.controller.form.ContaDepositoForm;
 import br.com.rafael.api.controller.form.ContaForm;
+import br.com.rafael.api.controller.form.ContaStatusForm;
 import br.com.rafael.api.exception.RecursoNaoEncontradoException;
 import br.com.rafael.api.model.Conta;
 import br.com.rafael.api.model.Pessoa;
@@ -45,16 +46,14 @@ public class ContaService {
         Long idDestino = form.getIdContaDestino();
         BigDecimal valor = form.getValor();
 
-        Conta contaDestino = contaRepository.findById(idDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idDestino));
-        Conta contaOrigem = contaRepository.findById(idOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idOrigem));
+        Conta contaDestino = contaRepository.findContaAtivaPorId(idDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idDestino));
+        Conta contaOrigem = contaRepository.findContaAtivaPorId(idOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idOrigem));
 
         contaOrigem.deposita(contaDestino, valor);
 
-        Transacao transacaoOrigem = new Transacao(contaOrigem, valor.negate());
-        Transacao transacaoDestino = new Transacao(contaDestino, valor);
+        transacaoRepository.save(new Transacao(contaOrigem, valor.negate()));
+        transacaoRepository.save(new Transacao(contaDestino, valor));
 
-        transacaoRepository.save(transacaoOrigem);
-        transacaoRepository.save(transacaoDestino);
         contaRepository.save(contaOrigem);
         contaRepository.save(contaDestino);
 
@@ -62,6 +61,16 @@ public class ContaService {
     }
 
     public Conta consultar(Long id) {
-        return contaRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
+        return contaRepository.findContaAtivaPorId(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
+    }
+
+    @Transactional
+    public Conta alterarStatus(Long id, ContaStatusForm form) {
+        Conta conta = contaRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
+
+        conta.setFlagAtivo(form.getFlagAtivo());
+        contaRepository.save(conta);
+
+        return conta;
     }
 }

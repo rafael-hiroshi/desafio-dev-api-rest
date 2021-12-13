@@ -66,6 +66,10 @@ public class Conta {
         return transacoes;
     }
 
+    public void setFlagAtivo(Boolean flagAtivo) {
+        this.flagAtivo = flagAtivo;
+    }
+
     public void deposita(Conta destino, BigDecimal valor) {
         if (valor.compareTo(this.saldo) > 0) {
             throw new SaldoInsuficienteException();
