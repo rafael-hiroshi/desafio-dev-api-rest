@@ -41,17 +41,17 @@ public class ContaService {
 
     @Transactional
     public Conta depositar(ContaDepositoForm form) {
-        Long idContaOrigem = form.getIdContaOrigem();
-        Long idContaDestino = form.getIdContaDestino();
-        BigDecimal valorDeposito = form.getValor();
+        Long idOrigem = form.getIdContaOrigem();
+        Long idDestino = form.getIdContaDestino();
+        BigDecimal valor = form.getValor();
 
-        Conta contaDestino = contaRepository.findById(idContaDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idContaDestino));
-        Conta contaOrigem = contaRepository.findById(idContaOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idContaOrigem));
+        Conta contaDestino = contaRepository.findById(idDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idDestino));
+        Conta contaOrigem = contaRepository.findById(idOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idOrigem));
 
-        contaOrigem.deposita(contaDestino, valorDeposito);
+        contaOrigem.deposita(contaDestino, valor);
 
-        Transacao transacaoOrigem = new Transacao(contaOrigem, valorDeposito.negate());
-        Transacao transacaoDestino = new Transacao(contaDestino, valorDeposito);
+        Transacao transacaoOrigem = new Transacao(contaOrigem, valor.negate());
+        Transacao transacaoDestino = new Transacao(contaDestino, valor);
 
         transacaoRepository.save(transacaoOrigem);
         transacaoRepository.save(transacaoDestino);
