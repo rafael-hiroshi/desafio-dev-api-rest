@@ -2,19 +2,22 @@ package br.com.rafael.api.controller;
 
 import br.com.rafael.api.controller.dto.ContaDetalheDto;
 import br.com.rafael.api.controller.dto.ContaSaldoDto;
-import br.com.rafael.api.controller.form.ContaDepositoForm;
-import br.com.rafael.api.controller.form.ContaForm;
-import br.com.rafael.api.controller.form.ContaSaqueForm;
-import br.com.rafael.api.controller.form.ContaStatusForm;
+import br.com.rafael.api.controller.dto.TransacaoDetalheDto;
+import br.com.rafael.api.controller.form.*;
 import br.com.rafael.api.model.Conta;
+import br.com.rafael.api.model.Transacao;
 import br.com.rafael.api.service.ContaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("conta")
@@ -57,5 +60,14 @@ public class ContaController {
         Conta conta = contaService.sacar(id, form);
 
         return ResponseEntity.ok(new ContaDetalheDto(conta));
+    }
+
+    @GetMapping("{id}/extrato")
+    public Page<TransacaoDetalheDto> imprimirExtrato(@RequestParam(required = false) String dataInicial,
+           @RequestParam(required = false) String dataFim, @PathVariable Long id,
+           @PageableDefault(sort = "dataTransacao") Pageable pageable) {
+        Page<Transacao> transacaoPage = contaService.imprimirExtrato(id, dataInicial, dataFim, pageable);
+
+        return TransacaoDetalheDto.converter(transacaoPage);
     }
 }

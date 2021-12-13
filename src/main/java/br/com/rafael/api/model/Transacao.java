@@ -4,7 +4,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transacoes")
@@ -18,7 +18,7 @@ public class Transacao {
     private Conta idConta;
     private BigDecimal valor;
     @CreationTimestamp
-    private Timestamp dataTransacao;
+    private LocalDateTime dataTransacao;
 
     public Transacao(Conta idConta, BigDecimal valor) {
         this.idConta = idConta;
@@ -39,7 +39,7 @@ public class Transacao {
         return valor;
     }
 
-    public Timestamp getDataTransacao() {
+    public LocalDateTime getDataTransacao() {
         return dataTransacao;
     }
 }

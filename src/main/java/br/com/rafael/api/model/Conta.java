@@ -1,7 +1,7 @@
 package br.com.rafael.api.model;
 
-import br.com.rafael.api.exception.LimiteDiarioExcedidoException;
-import br.com.rafael.api.exception.SaldoInsuficienteException;
+import br.com.rafael.api.error.exception.LimiteDiarioExcedidoException;
+import br.com.rafael.api.error.exception.SaldoInsuficienteException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
