@@ -103,13 +103,12 @@ public class ContaService {
 
     private LocalDateTime formataData(String data, boolean ehInicial) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate;
 
         if (data == null) {
             return null;
         }
 
-        localDate = LocalDate.parse(data, formatter);
+        LocalDate localDate = LocalDate.parse(data, formatter);
 
         if (ehInicial) {
             return localDate.atStartOfDay();
