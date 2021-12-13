@@ -1,18 +1,19 @@
 package br.com.rafael.api.service;
 
+import br.com.rafael.api.controller.form.ContaDepositoForm;
 import br.com.rafael.api.controller.form.ContaForm;
 import br.com.rafael.api.exception.RecursoNaoEncontradoException;
 import br.com.rafael.api.model.Conta;
 import br.com.rafael.api.model.Pessoa;
+import br.com.rafael.api.model.Transacao;
 import br.com.rafael.api.repository.ContaRepository;
 import br.com.rafael.api.repository.PessoaRepository;
+import br.com.rafael.api.repository.TransacaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 
 @Service
 public class ContaService {
@@ -22,6 +23,9 @@ public class ContaService {
 
     @Autowired
     private ContaRepository contaRepository;
+
+    @Autowired
+    private TransacaoRepository transacaoRepository;
 
     @Transactional
     public Conta cadastrar(ContaForm contaForm) {
@@ -33,5 +37,26 @@ public class ContaService {
         Conta conta = contaForm.converter(pessoa);
         contaRepository.save(conta);
         return conta;
+    }
+
+    @Transactional
+    public Conta depositar(Long idContaDestino, ContaDepositoForm form) {
+        Long idContaOrigem = form.getIdContaOrigem();
+        BigDecimal valorDeposito = form.getValor();
+
+        Conta contaDestino = contaRepository.findById(idContaDestino).orElseThrow(() -> new RecursoNaoEncontradoException(idContaDestino));
+        Conta contaOrigem = contaRepository.findById(idContaOrigem).orElseThrow(() -> new RecursoNaoEncontradoException(idContaOrigem));
+
+        contaOrigem.deposita(contaDestino, valorDeposito);
+
+        Transacao transacaoOrigem = new Transacao(contaOrigem, valorDeposito.negate());
+        Transacao transacaoDestino = new Transacao(contaDestino, valorDeposito);
+
+        transacaoRepository.save(transacaoOrigem);
+        transacaoRepository.save(transacaoDestino);
+        contaRepository.save(contaOrigem);
+        contaRepository.save(contaDestino);
+
+        return contaOrigem;
     }
 }

@@ -1,6 +1,6 @@
 package br.com.rafael.api.error;
 
-import br.com.rafael.api.exception.RecursoNaoEncontradoException;
+import br.com.rafael.api.exception.BaseHttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -36,9 +36,9 @@ public class ErrorHandler {
         return dto;
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(RecursoNaoEncontradoException.class)
-    public ResponseEntity<RespostaErroDto> handleNaoEncontrado(RecursoNaoEncontradoException exception) {
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BaseHttpException.class)
+    public ResponseEntity<RespostaErroDto> handle(BaseHttpException exception) {
         HttpStatus status = exception.getStatus();
 
         RespostaErroDto error = new RespostaErroDto(

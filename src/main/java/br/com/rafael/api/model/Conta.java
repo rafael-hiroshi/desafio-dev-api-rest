@@ -1,5 +1,7 @@
 package br.com.rafael.api.model;
 
+import br.com.rafael.api.exception.SaldoInsuficienteException;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -94,5 +96,14 @@ public class Conta {
 
     public void setTransacoes(List<Transacao> transacoes) {
         this.transacoes = transacoes;
+    }
+
+    public void deposita(Conta destino, BigDecimal valor) {
+        if (valor.compareTo(this.saldo) > 0) {
+            throw new SaldoInsuficienteException();
+        }
+
+        this.saldo = this.saldo.subtract(valor);
+        destino.saldo = destino.saldo.add(valor);
     }
 }

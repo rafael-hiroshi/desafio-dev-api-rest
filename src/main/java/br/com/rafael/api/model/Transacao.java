@@ -1,8 +1,10 @@
 package br.com.rafael.api.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "transacoes")
@@ -15,37 +17,29 @@ public class Transacao {
     @JoinColumn(name = "id_conta", nullable = false)
     private Conta idConta;
     private BigDecimal valor;
-    private LocalDate dataTransacao;
+    @CreationTimestamp
+    private Timestamp dataTransacao;
+
+    public Transacao(Conta idConta, BigDecimal valor) {
+        this.idConta = idConta;
+        this.valor = valor;
+    }
+
+    public Transacao() {}
 
     public Long getIdTransacao() {
         return idTransacao;
-    }
-
-    public void setIdTransacao(Long idTransacao) {
-        this.idTransacao = idTransacao;
     }
 
     public Conta getIdConta() {
         return idConta;
     }
 
-    public void setIdConta(Conta idConta) {
-        this.idConta = idConta;
-    }
-
     public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
-
-    public LocalDate getDataTransacao() {
+    public Timestamp getDataTransacao() {
         return dataTransacao;
-    }
-
-    public void setDataTransacao(LocalDate dataTransacao) {
-        this.dataTransacao = dataTransacao;
     }
 }
