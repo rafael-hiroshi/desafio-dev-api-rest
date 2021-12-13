@@ -60,4 +60,8 @@ public class ContaService {
 
         return contaOrigem;
     }
+
+    public Conta consultar(Long id) {
+        return contaRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
+    }
 }

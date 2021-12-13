@@ -43,7 +43,7 @@ public class ContaControllerTest {
                 .put("tipoConta", 1)
                 .toString();
 
-        doRequest(rotaCadastrar, 201);
+        post(rotaCadastrar, 201);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ContaControllerTest {
             .put("tipoConta", 1)
             .toString();
 
-        doRequest(rotaCadastrar, 404);
+        post(rotaCadastrar, 404);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class ContaControllerTest {
                 .put("tipoConta", 0)
                 .toString();
 
-        doRequest(rotaCadastrar, 400);
+        post(rotaCadastrar, 400);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ContaControllerTest {
                 .put("valor", new BigDecimal(200))
                 .toString();
 
-        doRequest(rotaDepositar, 400);
+        post(rotaDepositar, 400);
     }
 
     @Test
@@ -85,15 +85,34 @@ public class ContaControllerTest {
                 .put("valor", new BigDecimal(1000))
                 .toString();
 
-        doRequest(rotaDepositar, 200);
+        post(rotaDepositar, 200);
     }
 
-    private void doRequest(URI rota, int statusCode) throws Exception {
+    @Test
+    public void testConsultarSaldoDeContaDeveRetornarStatusCode200() throws Exception {
+        get(new URI("/conta/1"), 200);
+    }
+
+    @Test
+    public void testConsultarSaldoDeContaInexistenteDeveRetornarStatusCode404() throws Exception {
+        get(new URI("/conta/999"), 404);
+    }
+
+    private void post(URI rota, int statusCode) throws Exception {
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .post(rota)
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers
+                        .status()
+                        .is(statusCode));
+    }
+
+    private void get(URI rota, int statusCode) throws Exception {
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .get(rota))
                 .andExpect(MockMvcResultMatchers
                         .status()
                         .is(statusCode));

@@ -1,6 +1,7 @@
 package br.com.rafael.api.controller;
 
 import br.com.rafael.api.controller.dto.ContaDetalheDto;
+import br.com.rafael.api.controller.dto.ContaSaldoDto;
 import br.com.rafael.api.controller.form.ContaDepositoForm;
 import br.com.rafael.api.controller.form.ContaForm;
 import br.com.rafael.api.model.Conta;
@@ -33,5 +34,12 @@ public class ContaController {
         Conta conta = contaService.depositar(form);
 
         return ResponseEntity.ok(new ContaDetalheDto(conta));
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ContaSaldoDto> consultar(@PathVariable Long id) {
+        Conta conta = contaService.consultar(id);
+
+        return ResponseEntity.ok(new ContaSaldoDto(conta));
     }
 }
