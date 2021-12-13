@@ -1,0 +1,106 @@
+openapi: 3.0.1
+info:
+  title: API para gestão de contas
+  description: API para controlar médicos e suas especialidades dentro do consultório.
+  version: 1.0.0
+  contact:
+    name: Developer Support
+    email: rafael.kanasiro@gmail.com
+  license:
+    name: "Licença: GPLv3"
+    url: https://www.gnu.org/licenses/gpl-3.0.en.html
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Ambiente local
+paths:
+  /conta:
+    post:
+      summary: Cria uma nova conta
+      responses:
+        201:
+          description: "Criado"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conta"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idPessoa:
+                  type: integer
+                  minimum: 1
+                tipoConta:
+                  type: integer
+                  minimum: 1
+                  maximum: 2
+
+
+components:
+  schemas:
+    Conta:
+      type: object
+      properties:
+        idConta:
+          type: integer
+          minimum: 1
+        idPessoa:
+          type: integer
+          minimum: 1
+        saldo:
+          type: number
+          format: float
+        limiteSaqueDiario:
+          type: number
+          format: float
+        flagAtivo:
+          type: boolean
+        tipoConta:
+          type: string
+        dataCriacao:
+          type: string
+          format: date
+
+  responses:
+    404:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: datetime
+                example: "2021-12-12 14:18:23"
+              status:
+                type: integer
+                example: 404
+              erro:
+                type: string
+                example: "Not Found"
+              mensagem:
+                type: string
+                example: "Recurso com id 20 não encontrado"
+
+    400:
+      description: Falha na validação
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                campo:
+                  type: string
+                  example: "tipoConta"
+                erro:
+                  type: string
+                  example: "deve ser menor que ou igual à 2"
