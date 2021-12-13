@@ -11,4 +11,9 @@ INSERT INTO contas (id_conta, data_criacao, flag_ativo, limite_saque_diario, sal
 INSERT INTO contas (id_conta, data_criacao, flag_ativo, limite_saque_diario, saldo, tipo_conta, id_pessoa) VALUES(80, '2021-12-12', 0, 2500, 0, 1, 3);
 INSERT INTO contas (id_conta, data_criacao, flag_ativo, limite_saque_diario, saldo, tipo_conta, id_pessoa) VALUES(81, '2021-12-12', 0, 2500, 0, 1, 3);
 
+INSERT INTO transacoes (data_transacao, valor, id_conta) VALUES('2021-12-04 00:00:00', 1000, 1);
+INSERT INTO transacoes (data_transacao, valor, id_conta) VALUES('2021-12-05 00:00:00', 1000, 1);
+INSERT INTO transacoes (data_transacao, valor, id_conta) VALUES('2021-12-06 00:00:00', -850, 1);
+INSERT INTO transacoes (data_transacao, valor, id_conta) VALUES('2021-12-07 00:00:00', -600, 2);
+INSERT INTO transacoes (data_transacao, valor, id_conta) VALUES('2021-12-08 00:00:00', 1000, 2);
 

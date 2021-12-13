@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -26,12 +25,11 @@ public class ContaControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private static URI rotaCadastrar;
     private static String rotaBase;
     private String payload;
 
     @BeforeAll
-    public static void setup() throws URISyntaxException {
+    public static void setup() {
         rotaBase = "/conta";
     }
 
@@ -172,6 +170,21 @@ public class ContaControllerTest {
                 .toString();
 
         post(new URI("/conta/1/sacar"), 200);
+    }
+
+    @Test
+    public void testConsultarExtratoApenasComParametroDeContaDeveRetornarStatusCode200() throws Exception {
+        get(new URI("/conta/1/extrato"), 200);
+    }
+
+    @Test
+    public void testConsultarExtratoComParametroDeContaEDataInicialDeveRetornarStatusCode200() throws Exception {
+        get(new URI("/conta/1/extrato?dataInicial=2021-12-06"), 200);
+    }
+
+    @Test
+    public void testConsultarExtratoComParametrosDataInicialEFinalDeveRetornarStatusCode200() throws Exception {
+        get(new URI("/conta/1/extrato?dataInicial=2021-12-06&dataFinal=2021-12-12"), 200);
     }
 
     private void get(URI rota, int statusCode) throws Exception {
