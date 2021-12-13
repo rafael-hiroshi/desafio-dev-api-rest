@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
-  title: API para gestão de contas
-  description: API para controlar médicos e suas especialidades dentro do consultório.
+  title: API Sistema financeiro
+  description: API para sistemas de gestão de contas e financeiro.
   version: 1.0.0
   contact:
     name: Developer Support
@@ -157,7 +157,7 @@ paths:
                   type: number
                   format: float
                   example: 1000.0
-  /{id}/extrato:
+  /conta/{id}/extrato:
     parameters:
       - name: id
         in: path
@@ -165,6 +165,20 @@ paths:
           type: integer
           minimum: 1
         required: true
+      - in: query
+        name: dataInicial
+        schema:
+          type: string
+          format: date
+          example: "2021-12-12 (yyyy-MM-dd)"
+        description: "Data inicial do extrato - se não for especificado é considerado o primeiro dia do mês"
+      - in: query
+        name: dataFinal
+        schema:
+          type: string
+          format: date
+          example: "2021-12-13 (yyyy-MM-dd)"
+        description: "Data final do extrato - se não for especificado é considerado o último dia do mês"
     get:
       summary: Consulta o extrato de uma conta do mês atual ou por período definido
       responses:
@@ -179,6 +193,52 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Transacao"
+                  pageable:
+                    type: object
+                    properties:
+                      sort:
+                        $ref: "#/components/schemas/sort"
+                      pageNumber:
+                        type: integer
+                        example: 0
+                      pageSize:
+                        type: integer
+                        example: 10
+                      offset:
+                        type: integer
+                        example: 0
+                      paged:
+                        type: boolean
+                        example: true
+                      unpaged:
+                        type: boolean
+                        example: false
+                  totalPages:
+                    type: integer
+                    example: 2
+                  totalElements:
+                    type: integer
+                    example: 11
+                  last:
+                    type: boolean
+                    example: false
+                  number:
+                    type: integer
+                    example: 0
+                  sort:
+                    $ref: "#/components/schemas/sort"
+                  first:
+                    type: boolean
+                    example: true
+                  numberOfElements:
+                    type: integer
+                    example: 10
+                  size:
+                    type: integer
+                    example: 10
+                  empty:
+                    type: boolean
+                    example: false
         404:
           $ref: "#/components/responses/404"
         400:
@@ -229,6 +289,18 @@ components:
           type: string
           format: datetime
           example: "2021-12-12T04:53:44.789217"
+    sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+          example: true
+        unsorted:
+          type: boolean
+          example: false
+        empty:
+          type: boolean
+          example: false
 
   responses:
     404:
