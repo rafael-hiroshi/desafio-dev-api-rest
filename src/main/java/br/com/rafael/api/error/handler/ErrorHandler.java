@@ -1,6 +1,8 @@
-package br.com.rafael.api.error;
+package br.com.rafael.api.error.handler;
 
-import br.com.rafael.api.exception.BaseHttpException;
+import br.com.rafael.api.error.dto.ErroDeFormularioDto;
+import br.com.rafael.api.error.dto.RespostaErroDto;
+import br.com.rafael.api.error.exception.BaseHttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

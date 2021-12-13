@@ -1,4 +1,4 @@
-package br.com.rafael.api.error;
+package br.com.rafael.api.error.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

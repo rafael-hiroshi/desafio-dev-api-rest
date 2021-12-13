@@ -1,4 +1,4 @@
-package br.com.rafael.api.exception;
+package br.com.rafael.api.error.exception;
 
 import org.springframework.http.HttpStatus;
 

@@ -1,4 +1,4 @@
-package br.com.rafael.api.error;
+package br.com.rafael.api.error.dto;
 
 public class ErroDeFormularioDto {
     private String campo;
