@@ -91,11 +91,11 @@ public class ContaService {
         return conta;
     }
 
-    public Page<Transacao> imprimirExtrato(Long id, String dataInicial, String dataFim, Pageable pageable) {
+    public Page<Transacao> imprimirExtrato(Long id, String dataInicial, String dataFinal, Pageable pageable) {
         Conta conta = contaRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
 
         LocalDateTime dataInicialFormatada = formataData(dataInicial, true);
-        LocalDateTime dataFinalFormatada = formataData(dataFim, false);
+        LocalDateTime dataFinalFormatada = formataData(dataFinal, false);
 
         return transacaoRepository.findAll(SpecificationTransacao
                 .filtra(conta, dataInicialFormatada, dataFinalFormatada), pageable);

@@ -64,9 +64,9 @@ public class ContaController {
 
     @GetMapping("{id}/extrato")
     public Page<TransacaoDetalheDto> imprimirExtrato(@RequestParam(required = false) String dataInicial,
-           @RequestParam(required = false) String dataFim, @PathVariable Long id,
+           @RequestParam(required = false) String dataFinal, @PathVariable Long id,
            @PageableDefault(sort = "dataTransacao") Pageable pageable) {
-        Page<Transacao> transacaoPage = contaService.imprimirExtrato(id, dataInicial, dataFim, pageable);
+        Page<Transacao> transacaoPage = contaService.imprimirExtrato(id, dataInicial, dataFinal, pageable);
 
         return TransacaoDetalheDto.converter(transacaoPage);
     }
