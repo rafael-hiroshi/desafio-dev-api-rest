@@ -27,13 +27,12 @@ public class ContaControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private static URI rotaCadastrar;
-    private static URI rotaDepositar;
+    private static String rotaBase;
     private String payload;
 
     @BeforeAll
     public static void setup() throws URISyntaxException {
-        rotaCadastrar = new URI("/conta");
-        rotaDepositar = new URI("/conta/depositar");
+        rotaBase = "/conta";
     }
 
     @Test
@@ -43,7 +42,7 @@ public class ContaControllerTest {
                 .put("tipoConta", 1)
                 .toString();
 
-        post(rotaCadastrar, 201);
+        post(new URI(rotaBase), 201);
     }
 
     @Test
@@ -53,7 +52,7 @@ public class ContaControllerTest {
             .put("tipoConta", 1)
             .toString();
 
-        post(rotaCadastrar, 404);
+        post(new URI(rotaBase), 404);
     }
 
     @Test
@@ -63,40 +62,37 @@ public class ContaControllerTest {
                 .put("tipoConta", 0)
                 .toString();
 
-        post(rotaCadastrar, 400);
+        post(new URI(rotaBase), 400);
     }
 
     @Test
     public void testDepositarComSaldoInsuficienteDeveFalharERetornarStatusCode400() throws Exception {
         payload = new JSONObject()
                 .put("idContaOrigem", 4)
-                .put("idContaDestino", 1)
                 .put("valor", new BigDecimal(200))
                 .toString();
 
-        post(rotaDepositar, 400);
+        post(new URI("/conta/1/depositar"), 400);
     }
 
     @Test
     public void testDepositarComSaldoSuficienteDeveRetornarStatusCode200() throws Exception {
         payload = new JSONObject()
                 .put("idContaOrigem", 1)
-                .put("idContaDestino", 4)
                 .put("valor", new BigDecimal(1000))
                 .toString();
 
-        post(rotaDepositar, 200);
+        post(new URI("/conta/4/depositar"), 200);
     }
 
     @Test
     public void testDepositarParaContaInativaDeveFalharERetornarStatusCode404() throws Exception {
         payload = new JSONObject()
                 .put("idContaOrigem", 1)
-                .put("idContaDestino", 80)
                 .put("valor", new BigDecimal(1000))
                 .toString();
 
-        post(rotaDepositar, 404);
+        post(new URI("/conta/80/depositar"), 404);
     }
 
     @Test
