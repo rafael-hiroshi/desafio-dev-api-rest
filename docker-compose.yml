@@ -6,6 +6,8 @@ services:
       context: './'
     environment:
       JDBC_URL: jdbc:mysql://${DB_HOST}:3306/${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
