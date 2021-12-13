@@ -170,15 +170,15 @@ paths:
         schema:
           type: string
           format: date
-          example: "2021-12-12 (yyyy-MM-dd)"
-        description: "Data inicial do extrato - se não for especificado é considerado o primeiro dia do mês"
+          example: "2021-12-12"
+        description: "Opcional: data inicial do extrato - se não for especificado é considerado o primeiro dia do mês"
       - in: query
         name: dataFinal
         schema:
           type: string
           format: date
-          example: "2021-12-13 (yyyy-MM-dd)"
-        description: "Data final do extrato - se não for especificado é considerado o último dia do mês"
+          example: "2021-12-13"
+        description: "Opcional: data final do extrato - se não for especificado é considerado o último dia do mês"
     get:
       summary: Consulta o extrato de uma conta do mês atual ou por período definido
       responses:
