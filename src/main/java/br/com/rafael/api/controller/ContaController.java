@@ -4,6 +4,7 @@ import br.com.rafael.api.controller.dto.ContaDetalheDto;
 import br.com.rafael.api.controller.dto.ContaSaldoDto;
 import br.com.rafael.api.controller.form.ContaDepositoForm;
 import br.com.rafael.api.controller.form.ContaForm;
+import br.com.rafael.api.controller.form.ContaSaqueForm;
 import br.com.rafael.api.controller.form.ContaStatusForm;
 import br.com.rafael.api.model.Conta;
 import br.com.rafael.api.service.ContaService;
@@ -47,6 +48,13 @@ public class ContaController {
     @PatchMapping("{id}")
     public ResponseEntity<ContaDetalheDto> alterarStatus(@PathVariable Long id, @Valid @RequestBody ContaStatusForm form) {
         Conta conta = contaService.alterarStatus(id, form);
+
+        return ResponseEntity.ok(new ContaDetalheDto(conta));
+    }
+
+    @PostMapping("{id}/sacar")
+    public ResponseEntity<ContaDetalheDto> sacar(@PathVariable Long id, @Valid @RequestBody ContaSaqueForm form) {
+        Conta conta = contaService.sacar(id, form);
 
         return ResponseEntity.ok(new ContaDetalheDto(conta));
     }

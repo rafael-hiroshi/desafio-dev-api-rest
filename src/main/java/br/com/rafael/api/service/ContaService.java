@@ -2,6 +2,7 @@ package br.com.rafael.api.service;
 
 import br.com.rafael.api.controller.form.ContaDepositoForm;
 import br.com.rafael.api.controller.form.ContaForm;
+import br.com.rafael.api.controller.form.ContaSaqueForm;
 import br.com.rafael.api.controller.form.ContaStatusForm;
 import br.com.rafael.api.exception.RecursoNaoEncontradoException;
 import br.com.rafael.api.model.Conta;
@@ -70,6 +71,18 @@ public class ContaService {
 
         conta.setFlagAtivo(form.getFlagAtivo());
         contaRepository.save(conta);
+
+        return conta;
+    }
+
+    @Transactional
+    public Conta sacar(Long id, ContaSaqueForm form) {
+        Conta conta = contaRepository.findById(id).orElseThrow(() -> new RecursoNaoEncontradoException(id));
+        BigDecimal valorSaque = form.getValor();
+
+        conta.sacar(valorSaque);
+        contaRepository.save(conta);
+        transacaoRepository.save(new Transacao(conta, valorSaque.negate()));
 
         return conta;
     }

@@ -1,5 +1,6 @@
 package br.com.rafael.api.model;
 
+import br.com.rafael.api.exception.LimiteDiarioExcedidoException;
 import br.com.rafael.api.exception.SaldoInsuficienteException;
 
 import javax.persistence.*;
@@ -77,5 +78,16 @@ public class Conta {
 
         this.saldo = this.saldo.subtract(valor);
         destino.saldo = destino.saldo.add(valor);
+    }
+
+    public void sacar(BigDecimal valor) {
+        if (valor.compareTo(this.saldo) > 0) {
+            throw new SaldoInsuficienteException();
+        }
+        if (valor.compareTo(this.limiteSaqueDiario) > 0) {
+            throw new LimiteDiarioExcedidoException();
+        }
+
+        this.saldo = this.saldo.subtract(valor);
     }
 }

@@ -47,7 +47,7 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testCriarContaComPessoaNaoCadastradaDeveRetornarStatusCode404() throws Exception {
+    public void testCriarContaComPessoaNaoCadastradaDeveFalharERetornarStatusCode404() throws Exception {
         payload = new JSONObject()
             .put("idPessoa", 999)
             .put("tipoConta", 1)
@@ -57,7 +57,7 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testCriarContaComTipoDeContaInvalidoDeveRetornarStatusCode400() throws Exception {
+    public void testCriarContaComTipoDeContaInvalidoDeveFalharERetornarStatusCode400() throws Exception {
         payload = new JSONObject()
                 .put("idPessoa", 1)
                 .put("tipoConta", 0)
@@ -67,7 +67,7 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testDepositarComSaldoInsuficienteDeveRetornarStatusCode400() throws Exception {
+    public void testDepositarComSaldoInsuficienteDeveFalharERetornarStatusCode400() throws Exception {
         payload = new JSONObject()
                 .put("idContaOrigem", 4)
                 .put("idContaDestino", 1)
@@ -89,10 +89,10 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testDepositarParaContaInativaDeveRetornarStatusCode404() throws Exception {
+    public void testDepositarParaContaInativaDeveFalharERetornarStatusCode404() throws Exception {
         payload = new JSONObject()
                 .put("idContaOrigem", 1)
-                .put("idContaDestino", 5)
+                .put("idContaDestino", 80)
                 .put("valor", new BigDecimal(1000))
                 .toString();
 
@@ -105,7 +105,7 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testConsultarSaldoDeContaInexistenteDeveRetornarStatusCode404() throws Exception {
+    public void testConsultarSaldoDeContaInexistenteDeveFalharERetornarStatusCode404() throws Exception {
         get(new URI("/conta/999"), 404);
     }
 
@@ -134,12 +134,48 @@ public class ContaControllerTest {
     }
 
     @Test
-    public void testInativarContaInexistenteDeveRetornarStatusCode404() throws Exception {
+    public void testInativarContaInexistenteDeveFalharERetornarStatusCode404() throws Exception {
         payload = new JSONObject()
                 .put("flagAtivo", false)
                 .toString();
 
         patch(new URI("/conta/999"), 404);
+    }
+
+    @Test
+    public void testSacarQuantidadeIgualAoLimiteDeveRetornarStatusCode200() throws Exception {
+        payload = new JSONObject()
+                .put("valor", new BigDecimal(1000))
+                .toString();
+
+        post(new URI("/conta/1/sacar"), 200);
+    }
+
+    @Test
+    public void testSacarQuantidadeMaiorQueOLimiteDeveFalharERetornarStatusCode400() throws Exception {
+        payload = new JSONObject()
+                .put("valor", new BigDecimal(1002))
+                .toString();
+
+        post(new URI("/conta/1/sacar"), 400);
+    }
+
+    @Test
+    public void testSacarQuantidadeIgualAZeroDeveFalharERetornarStatusCode400() throws Exception {
+        payload = new JSONObject()
+                .put("valor", new BigDecimal(0))
+                .toString();
+
+        post(new URI("/conta/1/sacar"), 400);
+    }
+
+    @Test
+    public void testSacarQuantidadeMaiorQueZeroEAbaixoDoLimiteDeveRetornarStatusCode200() throws Exception {
+        payload = new JSONObject()
+                .put("valor", new BigDecimal(1))
+                .toString();
+
+        post(new URI("/conta/1/sacar"), 200);
     }
 
     private void get(URI rota, int statusCode) throws Exception {
