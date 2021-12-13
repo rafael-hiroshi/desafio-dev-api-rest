@@ -41,6 +41,149 @@ paths:
                   minimum: 1
                   maximum: 2
 
+  /conta/{id}:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          minimum: 1
+        required: true
+    get:
+      summary: Consulta o saldo de uma conta
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  saldo:
+                    type: number
+                    format: float
+                    example: 2500.0
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+    patch:
+      summary: Bloqueia uma conta
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conta"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                flagAtivo:
+                  type: boolean
+                  example: false
+                  description: Aceita somente valor falso
+
+  /conta/{id}/depositar:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          minimum: 1
+        required: true
+    post:
+      summary: Realiza operação de depósito de uma conta para outra
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conta"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idContaOrigem:
+                  type: integer
+                  minimum: 1
+                valor:
+                  type: number
+                  format: float
+                  example: 1000.0
+
+  /conta/{id}/sacar:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          minimum: 1
+        required: true
+    post:
+      summary: Realiza operação de saque em uma conta
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conta"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                valor:
+                  type: number
+                  format: float
+                  example: 1000.0
+  /{id}/extrato:
+    parameters:
+      - name: id
+        in: path
+        schema:
+          type: integer
+          minimum: 1
+        required: true
+    get:
+      summary: Consulta o extrato de uma conta do mês atual ou por período definido
+      responses:
+        200:
+          description: "Sucesso"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transacao"
+        404:
+          $ref: "#/components/responses/404"
+        400:
+          $ref: "#/components/responses/400"
+
 
 components:
   schemas:
@@ -56,16 +199,36 @@ components:
         saldo:
           type: number
           format: float
+          example: 4000.0
         limiteSaqueDiario:
           type: number
           format: float
+          example: 1000.0
         flagAtivo:
           type: boolean
         tipoConta:
           type: string
+          example: "CONTA_CORRENTE"
         dataCriacao:
           type: string
           format: date
+    Transacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        idConta:
+          type: integer
+          minimum: 1
+        valor:
+          type: number
+          format: float
+          example: 1000.0
+        dataTransacao:
+          type: string
+          format: datetime
+          example: "2021-12-12T04:53:44.789217"
 
   responses:
     404:
