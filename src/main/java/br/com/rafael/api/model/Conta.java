@@ -38,64 +38,32 @@ public class Conta {
         return idConta;
     }
 
-    public void setIdConta(Long idConta) {
-        this.idConta = idConta;
-    }
-
     public Pessoa getPessoa() {
         return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
     }
 
     public BigDecimal getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(BigDecimal saldo) {
-        this.saldo = saldo;
-    }
-
     public BigDecimal getLimiteSaqueDiario() {
         return limiteSaqueDiario;
-    }
-
-    public void setLimiteSaqueDiario(BigDecimal limiteSaqueDiario) {
-        this.limiteSaqueDiario = limiteSaqueDiario;
     }
 
     public Boolean getFlagAtivo() {
         return flagAtivo;
     }
 
-    public void setFlagAtivo(Boolean flagAtivo) {
-        this.flagAtivo = flagAtivo;
-    }
-
     public TipoConta getTipoConta() {
         return tipoConta;
-    }
-
-    public void setTipoConta(TipoConta tipoConta) {
-        this.tipoConta = tipoConta;
     }
 
     public LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
     public List<Transacao> getTransacoes() {
         return transacoes;
-    }
-
-    public void setTransacoes(List<Transacao> transacoes) {
-        this.transacoes = transacoes;
     }
 
     public void deposita(Conta destino, BigDecimal valor) {
