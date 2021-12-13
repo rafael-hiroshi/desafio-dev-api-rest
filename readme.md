@@ -26,9 +26,14 @@ Nessa etapa será realizado o build da imagem do container e a aplicação irá 
 docker-compose up --build
 ```
 
+### Acesso a API
+```
+http://localhost:8080/api/v1/
+```
+
 ### Documentação da API
 
-Quando o servidor estiver rodando, acessar a url para visualizar o swagger UI com a documentaç
+Quando o servidor estiver rodando, acessar a url para visualizar o swagger UI com a documentação
 ```
 http:localhost:8080/api/v1/swagger-ui.html
 ```
